@@ -1,0 +1,38 @@
+[package]
+name = "chrono-datepicker-core"
+version = "1.0.0"
+authors = ["Tomas Miklovic <tommket@gmail.com>"]
+edition = "2018"
+categories = ["date-and-time", "gui"]
+description = " Core library for datepickers that should only depend on chrono."
+include = ["/src/**/*"]
+keywords = ["gui", "datepicker"]
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/tommket/chrono-datepicker-core"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = { version = "0.4", features = ["wasmbind"] }
+num-traits = { version = "0.2", default-features = false }
+derive_builder = "0.9"
+derive-getters = "0.2"
+cfg-if = "1.0"
+
+# just some cfg macros for automocking
+mockall_double = "0.2"
+
+[features]
+# pass along the wasmbind feature to chrono, when building for wasm
+wasmbind = ["chrono/wasmbind"]
+
+[dev-dependencies]
+rstest = "0.6.4"
+criterion = "0.3"
+mockall = "0.9"
+
+[[bench]]
+name = "config_benchmark"
+path = "benches/config_benchmark.rs"
+harness = false
