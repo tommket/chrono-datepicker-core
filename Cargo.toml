@@ -14,7 +14,7 @@ repository = "https://github.com/tommket/chrono-datepicker-core"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-chrono = { version = "0.4", features = ["wasmbind"] }
+chrono = "0.4"
 num-traits = { version = "0.2", default-features = false }
 derive_builder = "0.9"
 derive-getters = "0.2"
