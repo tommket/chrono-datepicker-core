@@ -1,6 +1,6 @@
 [package]
 name = "chrono-datepicker-core"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Tomas Miklovic <tommket@gmail.com>"]
 edition = "2018"
 categories = ["date-and-time", "gui"]
@@ -28,7 +28,7 @@ mockall_double = "0.2"
 wasmbind = ["chrono/wasmbind"]
 
 [dev-dependencies]
-rstest = "0.7.0"
+rstest = "0.7"
 criterion = "0.3"
 mockall = "0.9"
 
