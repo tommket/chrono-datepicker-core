@@ -95,8 +95,8 @@ mod tests {
             .build();
         assert!(config.is_err());
         assert_eq!(
-            config.err(),
-            Some("initial_view_type can have at most selection_type scale".into())
+            config.unwrap_err().to_string(),
+            "initial_view_type can have at most selection_type scale"
         );
     }
 
@@ -130,8 +130,8 @@ mod tests {
             .build();
         assert!(config.is_err());
         assert_eq!(
-            config.err(),
-            Some("The initial_date 2020-01-01 is forbidden by the date_constraints.".into())
+            config.unwrap_err().to_string(),
+            "The initial_date 2020-01-01 is forbidden by the date_constraints."
         );
     }
 

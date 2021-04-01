@@ -182,8 +182,8 @@ mod tests {
             .build();
         assert!(config.is_err());
         assert_eq!(
-            config.err(),
-            Some("min_date must be earlier or exactly at max_date".into())
+            config.unwrap_err().to_string(),
+            "min_date must be earlier or exactly at max_date"
         );
     }
 
