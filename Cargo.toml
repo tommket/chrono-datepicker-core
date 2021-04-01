@@ -16,7 +16,7 @@ repository = "https://github.com/tommket/chrono-datepicker-core"
 [dependencies]
 chrono = "0.4"
 num-traits = { version = "0.2", default-features = false }
-derive_builder = "0.9"
+derive_builder = "0.10"
 derive-getters = "0.2"
 cfg-if = "1.0"
 
