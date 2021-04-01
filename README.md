@@ -4,7 +4,7 @@
 [![Crates IO badge](http://meritbadge.herokuapp.com/chrono-datepicker-core)](https://crates.io/crates/chrono-datepicker-core)
 [![unsafe forbidden](https://img.shields.io/badge/unsafe-forbidden-success.svg)](https://github.com/rust-secure-code/safety-dance/)
 [![codecov](https://codecov.io/gh/tommket/chrono-datepicker-core/branch/master/graph/badge.svg?token=BGZ12GL2GD)](https://codecov.io/gh/tommket/chrono-datepicker-core)
-[![dependency status](https://deps.rs/crate/chrono-datepicker-core/1.0.1/status.svg)](https://deps.rs/crate/chrono-datepicker-core/1.0.1)
+[![dependency status](https://deps.rs/crate/chrono-datepicker-core/1.0.2/status.svg)](https://deps.rs/crate/chrono-datepicker-core/1.0.2)
 
 Core library for datepickers that should only depend on [Chrono](https://crates.io/crates/chrono).
 
