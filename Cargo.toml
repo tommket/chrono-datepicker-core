@@ -1,6 +1,6 @@
 [package]
 name = "chrono-datepicker-core"
-version = "1.0.2"
+version = "1.0.3"
 authors = ["Tomas Miklovic <tommket@gmail.com>"]
 edition = "2018"
 categories = ["date-and-time", "gui"]
@@ -14,9 +14,9 @@ repository = "https://github.com/tommket/chrono-datepicker-core"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-chrono = "0.4"
+chrono = { version = "0.4", default-features = false, features = [ "clock" ] }
 num-traits = { version = "0.2", default-features = false }
-derive_builder = "0.10"
+derive_builder = { version = "0.10", default-features = false }
 derive-getters = "0.2"
 cfg-if = "1.0"
 
