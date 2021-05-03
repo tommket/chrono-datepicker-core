@@ -28,7 +28,7 @@ mockall_double = "0.2"
 wasmbind = ["chrono/wasmbind"]
 
 [dev-dependencies]
-rstest = "0.8"
+rstest = "0.9"
 criterion = "0.3"
 mockall = "0.9"
 
