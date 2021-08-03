@@ -98,7 +98,7 @@ impl HasDateConstraints for DateConstraints {
                 .disabled_months
                 .contains(&Month::from_u32(date.month()).unwrap())
             || self.disabled_years.contains(&date.year())
-            || self.disabled_unique_dates.contains(&date)
+            || self.disabled_unique_dates.contains(date)
             || self.disabled_monthly_dates.contains(&date.day())
             || self
                 .disabled_yearly_dates
