@@ -65,13 +65,10 @@ pub struct DateConstraints {
 
 impl DateConstraintsBuilder {
     fn validate(&self) -> Result<(), String> {
-        match (self.min_date, self.max_date) {
-            (Some(min_date), Some(max_date)) => {
-                if min_date > max_date {
-                    return Err("min_date must be earlier or exactly at max_date".into());
-                }
+        if let (Some(min_date), Some(max_date)) = (self.min_date, self.max_date) {
+            if min_date > max_date {
+                return Err("min_date must be earlier or exactly at max_date".into());
             }
-            (_, _) => {}
         }
         Ok(())
     }

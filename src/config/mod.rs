@@ -55,16 +55,14 @@ impl<T: HasDateConstraints + std::default::Default + Clone> PickerConfigBuilder<
         if self.initial_view_type > self.selection_type {
             return Err("initial_view_type can have at most selection_type scale".into());
         }
-        match (self.initial_date, &self.date_constraints) {
-            (Some(Some(initial_date)), Some(date_constraints)) => {
-                if date_constraints.is_day_forbidden(&initial_date) {
-                    return Err(format!(
-                        "The initial_date {:?} is forbidden by the date_constraints.",
-                        initial_date
-                    ));
-                }
+        if let (Some(Some(initial_date)), Some(date_constraints)) =
+            (self.initial_date, &self.date_constraints)
+        {
+            if date_constraints.is_day_forbidden(&initial_date) {
+                return Err(format!(
+                    "The initial_date {initial_date} is forbidden by the date_constraints."
+                ));
             }
-            (_, _) => {}
         }
         Ok(())
     }
