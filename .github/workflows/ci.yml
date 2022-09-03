@@ -10,9 +10,6 @@ on:
 
 name: CI
 
-permissions:
-  contents: read
-
 jobs:
   check:
     name: Check
