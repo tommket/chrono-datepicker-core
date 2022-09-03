@@ -42,7 +42,7 @@ jobs:
         if: >
           github.ref == 'refs/heads/master'
         run: |
-          cargo install cargo-tarpaulin --vers "^0.16"
+          cargo install cargo-tarpaulin --vers "^0.21"
           cargo tarpaulin --out Xml --verbose --ignore-tests
       - name: Upload to Codecov
         if: >
