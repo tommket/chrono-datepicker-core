@@ -3,7 +3,10 @@ use std::collections::HashSet;
 
 use num_traits::FromPrimitive;
 
-use crate::viewed_date::{year_group_range, ViewedDate};
+use crate::{
+    utils::from_ymd,
+    viewed_date::{year_group_range, ViewedDate},
+};
 
 #[cfg(test)]
 use mockall::automock;
@@ -117,8 +120,7 @@ impl HasDateConstraints for DateConstraints {
 
     fn is_year_forbidden(&self, year: i32) -> bool {
         self.disabled_years.contains(&year)
-            || (1..=12u32)
-                .all(|month| self.is_month_forbidden(&NaiveDate::from_ymd(year, month, 1)))
+            || (1..=12u32).all(|month| self.is_month_forbidden(&from_ymd(year, month, 1)))
     }
 
     fn is_year_group_forbidden(&self, year: i32) -> bool {
@@ -165,7 +167,7 @@ mod tests {
 
     #[test]
     fn picker_config_min_date_greater_than_max_date() {
-        let date = NaiveDate::from_ymd(2020, 10, 15);
+        let date = from_ymd(2020, 10, 15);
         let config = DateConstraintsBuilder::default()
             .min_date(date.clone())
             .max_date(date.clone() - Duration::days(1))
@@ -179,7 +181,7 @@ mod tests {
 
     #[test]
     fn picker_config_min_date_equals_max_date() {
-        let date = NaiveDate::from_ymd(2020, 10, 15);
+        let date = from_ymd(2020, 10, 15);
         let config = DateConstraintsBuilder::default()
             .min_date(date.clone())
             .max_date(date.clone())
@@ -189,7 +191,7 @@ mod tests {
 
     #[test]
     fn is_day_forbidden_at_min_date_allowed() {
-        let date = NaiveDate::from_ymd(2020, 10, 15);
+        let date = from_ymd(2020, 10, 15);
         let config = DateConstraintsBuilder::default()
             .min_date(date.clone())
             .build()
@@ -199,7 +201,7 @@ mod tests {
 
     #[test]
     fn is_day_forbidden_before_min_date_not_allowed() {
-        let date = NaiveDate::from_ymd(2020, 10, 15);
+        let date = from_ymd(2020, 10, 15);
         let config = DateConstraintsBuilder::default()
             .min_date(date.clone())
             .build()
@@ -209,7 +211,7 @@ mod tests {
 
     #[test]
     fn is_day_forbidden_at_max_date_allowed() {
-        let date = NaiveDate::from_ymd(2020, 10, 15);
+        let date = from_ymd(2020, 10, 15);
         let config = DateConstraintsBuilder::default()
             .max_date(date.clone())
             .build()
@@ -219,7 +221,7 @@ mod tests {
 
     #[test]
     fn is_day_forbidden_after_max_date_not_allowed() {
-        let date = NaiveDate::from_ymd(2020, 10, 15);
+        let date = from_ymd(2020, 10, 15);
         let config = DateConstraintsBuilder::default()
             .max_date(date.clone())
             .build()
@@ -241,7 +243,9 @@ mod tests {
             .disabled_weekdays([disabled_weekday].iter().cloned().collect())
             .build()
             .unwrap();
-        assert!(config.is_day_forbidden(&NaiveDate::from_isoywd(year, week, disabled_weekday)));
+        assert!(config.is_day_forbidden(
+            &NaiveDate::from_isoywd_opt(year, week, disabled_weekday).expect("invalid date")
+        ));
     }
 
     #[rstest(
@@ -258,11 +262,7 @@ mod tests {
             .disabled_months([disabled_month].iter().cloned().collect())
             .build()
             .unwrap();
-        assert!(config.is_day_forbidden(&NaiveDate::from_ymd(
-            year,
-            disabled_month.number_from_month(),
-            day
-        )))
+        assert!(config.is_day_forbidden(&from_ymd(year, disabled_month.number_from_month(), day)))
     }
 
     #[rstest(
@@ -279,12 +279,12 @@ mod tests {
             .disabled_years([disabled_year].iter().cloned().collect())
             .build()
             .unwrap();
-        assert!(config.is_day_forbidden(&NaiveDate::from_ymd(disabled_year, month, day)))
+        assert!(config.is_day_forbidden(&from_ymd(disabled_year, month, day)))
     }
 
     #[test]
     fn is_day_forbidden_disabled_unique_dates_not_allowed() {
-        let date = NaiveDate::from_ymd(2020, 1, 16);
+        let date = from_ymd(2020, 1, 16);
         let config = DateConstraintsBuilder::default()
             .disabled_unique_dates([date].iter().cloned().collect())
             .build()
@@ -294,12 +294,12 @@ mod tests {
 
     #[test]
     fn is_day_forbidden_disabled_unique_dates_after_a_year_allowed() {
-        let date = NaiveDate::from_ymd(2020, 1, 16);
+        let date = from_ymd(2020, 1, 16);
         let config = DateConstraintsBuilder::default()
             .disabled_unique_dates([date].iter().cloned().collect())
             .build()
             .unwrap();
-        assert!(!config.is_day_forbidden(&NaiveDate::from_ymd(2021, 1, 16)))
+        assert!(!config.is_day_forbidden(&from_ymd(2021, 1, 16)))
     }
 
     #[rstest(
@@ -314,12 +314,12 @@ mod tests {
         month: MonthNumber,
         day: DayNumber,
     ) {
-        let disabled_yearly_date = NaiveDate::from_ymd(year_in_disabled, month, day);
+        let disabled_yearly_date = from_ymd(year_in_disabled, month, day);
         let config = DateConstraintsBuilder::default()
             .disabled_yearly_dates(vec![disabled_yearly_date])
             .build()
             .unwrap();
-        assert!(config.is_day_forbidden(&NaiveDate::from_ymd(year_in_input, month, day)))
+        assert!(config.is_day_forbidden(&from_ymd(year_in_input, month, day)))
     }
 
     #[rstest(
@@ -336,7 +336,7 @@ mod tests {
             .disabled_monthly_dates([day].iter().cloned().collect())
             .build()
             .unwrap();
-        assert!(config.is_day_forbidden(&NaiveDate::from_ymd(year, month, day)))
+        assert!(config.is_day_forbidden(&from_ymd(year, month, day)))
     }
 
     #[rstest(
@@ -353,11 +353,7 @@ mod tests {
             .disabled_months([disabled_month].iter().cloned().collect())
             .build()
             .unwrap();
-        assert!(config.is_month_forbidden(&NaiveDate::from_ymd(
-            year,
-            disabled_month.number_from_month(),
-            day
-        )))
+        assert!(config.is_month_forbidden(&from_ymd(year, disabled_month.number_from_month(), day)))
     }
 
     #[rstest(
@@ -374,7 +370,7 @@ mod tests {
             .disabled_years([disabled_year].iter().cloned().collect())
             .build()
             .unwrap();
-        assert!(config.is_month_forbidden(&NaiveDate::from_ymd(disabled_year, month, day)))
+        assert!(config.is_month_forbidden(&from_ymd(disabled_year, month, day)))
     }
 
     #[rstest(

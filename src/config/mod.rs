@@ -74,7 +74,7 @@ impl<T: HasDateConstraints + std::default::Default + Clone> PickerConfig<T> {
             return init_date;
         }
         // if none of the above constraints matched use the current_date
-        Local::now().date().naive_local()
+        Local::now().date_naive()
     }
 }
 
@@ -123,7 +123,7 @@ mod tests {
             .expect_is_day_forbidden()
             .returning(|_| true);
         let config = PickerConfigBuilder::default()
-            .initial_date(NaiveDate::from_ymd(2020, 1, 1))
+            .initial_date(NaiveDate::from_ymd_opt(2020, 1, 1).expect("invalid date"))
             .date_constraints(date_constraints_mock)
             .build();
         assert!(config.is_err());
@@ -153,7 +153,7 @@ mod tests {
 
     #[test]
     fn test_is_day_forbidden() {
-        let date = NaiveDate::from_ymd(2020, 1, 1);
+        let date = NaiveDate::from_ymd_opt(2020, 1, 1).expect("invalid date");
         let mut date_constraints_mock = MockHasDateConstraints::new();
         date_constraints_mock
             .expect_is_day_forbidden()
@@ -168,7 +168,7 @@ mod tests {
 
     #[test]
     fn test_is_month_forbidden() {
-        let year_month = NaiveDate::from_ymd(2000, 2, 24);
+        let year_month = NaiveDate::from_ymd_opt(2000, 2, 24).expect("invalid date");
         let mut date_constraints_mock = MockHasDateConstraints::new();
         date_constraints_mock
             .expect_is_month_forbidden()
@@ -213,7 +213,7 @@ mod tests {
 
     #[test]
     fn guess_allowed_year_month_with_initial_date() {
-        let initial_date = NaiveDate::from_ymd(2020, 3, 24);
+        let initial_date = NaiveDate::from_ymd_opt(2020, 3, 24).expect("invalid date");
         let config = PickerConfigBuilder::<MockHasDateConstraints>::default()
             .initial_date(initial_date)
             .build()

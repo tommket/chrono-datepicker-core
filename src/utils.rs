@@ -56,6 +56,11 @@ pub fn should_display_next_button<T: HasDateConstraints>(
     }
 }
 
+/// Returns a `NaiveDate` (simple utility function because the one in `NaiveDate` got deprecated).
+pub fn from_ymd(year: i32, month: u32, day: u32) -> NaiveDate {
+    NaiveDate::from_ymd_opt(year, month, day).expect("invalid or out-of-range date")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
