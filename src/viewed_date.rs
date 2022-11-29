@@ -2,7 +2,7 @@ use std::ops::RangeInclusive;
 
 use chrono::{Datelike, NaiveDate};
 
-use crate::dialog_view_type::DialogViewType;
+use crate::{dialog_view_type::DialogViewType, utils::from_ymd};
 
 pub const YEARS_IN_YEAR_SELECTION: i32 = 20;
 
@@ -47,7 +47,7 @@ impl ViewedDate for NaiveDate {
         } else {
             month -= 1;
         }
-        NaiveDate::from_ymd(year, month, 1)
+        from_ymd(year, month, 1)
     }
 
     fn next_month(&self) -> NaiveDate {
@@ -59,27 +59,27 @@ impl ViewedDate for NaiveDate {
         } else {
             month += 1;
         }
-        NaiveDate::from_ymd(year, month, 1)
+        from_ymd(year, month, 1)
     }
 
     fn previous_year(&self) -> NaiveDate {
-        NaiveDate::from_ymd(self.year() - 1, 1, 1)
+        from_ymd(self.year() - 1, 1, 1)
     }
 
     fn next_year(&self) -> NaiveDate {
-        NaiveDate::from_ymd(self.year() + 1, 1, 1)
+        from_ymd(self.year() + 1, 1, 1)
     }
 
     fn previous_year_group(&self) -> NaiveDate {
-        NaiveDate::from_ymd(year_group_start(self.year()) - 1, 1, 1)
+        from_ymd(year_group_start(self.year()) - 1, 1, 1)
     }
 
     fn next_year_group(&self) -> NaiveDate {
-        NaiveDate::from_ymd(year_group_end(self.year()) + 1, 1, 1)
+        from_ymd(year_group_end(self.year()) + 1, 1, 1)
     }
 
     fn first_day_of_month(&self) -> NaiveDate {
-        NaiveDate::from_ymd(self.year(), self.month(), 1)
+        from_ymd(self.year(), self.month(), 1)
     }
 
     fn contains(&self, dialog_view_type: &DialogViewType, date: &NaiveDate) -> bool {
