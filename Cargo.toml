@@ -30,7 +30,7 @@ wasmbind = ["chrono/wasmbind"]
 [dev-dependencies]
 rstest = "0.22"
 criterion = "0.4"
-mockall = "0.12"
+mockall = "0.13"
 
 [[bench]]
 name = "config_benchmark"
