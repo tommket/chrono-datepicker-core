@@ -35,7 +35,12 @@ fn create_config() -> PickerConfig<DateConstraints> {
                     NaiveDate::from_ymd_opt(1, 12, 25).unwrap(),
                     NaiveDate::from_ymd_opt(1, 12, 26).unwrap(),
                 ])
-                .disabled_unique_dates([NaiveDate::from_ymd_opt(2020, 12, 8).unwrap()].iter().cloned().collect())
+                .disabled_unique_dates(
+                    [NaiveDate::from_ymd_opt(2020, 12, 8).unwrap()]
+                        .iter()
+                        .cloned()
+                        .collect(),
+                )
                 .build()
                 .unwrap(),
         )
