@@ -21,21 +21,21 @@ criterion_main!(benches);
 
 fn create_config() -> PickerConfig<DateConstraints> {
     PickerConfigBuilder::default()
-        .initial_date(NaiveDate::from_ymd(2020, 12, 15))
+        .initial_date(NaiveDate::from_ymd_opt(2020, 12, 15).unwrap())
         .date_constraints(
             DateConstraintsBuilder::default()
-                .min_date(NaiveDate::from_ymd(2020, 12, 1))
-                .max_date(NaiveDate::from_ymd(2022, 12, 14))
+                .min_date(NaiveDate::from_ymd_opt(2020, 12, 1).unwrap())
+                .max_date(NaiveDate::from_ymd_opt(2022, 12, 14).unwrap())
                 .disabled_weekdays([Weekday::Sat, Weekday::Sun].iter().cloned().collect())
                 .disabled_months([Month::July, Month::August].iter().cloned().collect())
                 .disabled_years([2021].iter().cloned().collect())
                 .disabled_monthly_dates([13].iter().cloned().collect())
                 .disabled_yearly_dates(vec![
-                    NaiveDate::from_ymd(1, 12, 24),
-                    NaiveDate::from_ymd(1, 12, 25),
-                    NaiveDate::from_ymd(1, 12, 26),
+                    NaiveDate::from_ymd_opt(1, 12, 24).unwrap(),
+                    NaiveDate::from_ymd_opt(1, 12, 25).unwrap(),
+                    NaiveDate::from_ymd_opt(1, 12, 26).unwrap(),
                 ])
-                .disabled_unique_dates([NaiveDate::from_ymd(2020, 12, 8)].iter().cloned().collect())
+                .disabled_unique_dates([NaiveDate::from_ymd_opt(2020, 12, 8).unwrap()].iter().cloned().collect())
                 .build()
                 .unwrap(),
         )
@@ -45,7 +45,7 @@ fn create_config() -> PickerConfig<DateConstraints> {
 
 #[allow(dead_code)]
 fn is_day_forbidden_day_allowed(c: &mut Criterion) {
-    let start_date = NaiveDate::from_ymd(2020, 12, 9);
+    let start_date = NaiveDate::from_ymd_opt(2020, 12, 9).unwrap();
     let config = create_config();
     c.bench_function("is_day_forbidden_day_allowed", |b| {
         b.iter(|| config.is_day_forbidden(black_box(&start_date)))
@@ -54,7 +54,7 @@ fn is_day_forbidden_day_allowed(c: &mut Criterion) {
 
 #[allow(dead_code)]
 fn is_day_forbidden_sooner_than_min_date(c: &mut Criterion) {
-    let start_date = NaiveDate::from_ymd(2020, 11, 30);
+    let start_date = NaiveDate::from_ymd_opt(2020, 11, 30).unwrap();
     let config = create_config();
     c.bench_function("is_day_forbidden_sooner_than_min_date", |b| {
         b.iter(|| config.is_day_forbidden(black_box(&start_date)))
@@ -63,7 +63,7 @@ fn is_day_forbidden_sooner_than_min_date(c: &mut Criterion) {
 
 #[allow(dead_code)]
 fn is_day_forbidden_later_than_max_date(c: &mut Criterion) {
-    let start_date = NaiveDate::from_ymd(2023, 2, 15);
+    let start_date = NaiveDate::from_ymd_opt(2023, 2, 15).unwrap();
     let config = create_config();
     c.bench_function("is_day_forbidden_later_than_max_date", |b| {
         b.iter(|| config.is_day_forbidden(black_box(&start_date)))
@@ -72,7 +72,7 @@ fn is_day_forbidden_later_than_max_date(c: &mut Criterion) {
 
 #[allow(dead_code)]
 fn is_day_forbidden_on_disabled_weekday(c: &mut Criterion) {
-    let start_date = NaiveDate::from_ymd(2020, 12, 12);
+    let start_date = NaiveDate::from_ymd_opt(2020, 12, 12).unwrap();
     let config = create_config();
     c.bench_function("is_day_forbidden_on_disabled_weekday", |b| {
         b.iter(|| config.is_day_forbidden(black_box(&start_date)))
@@ -81,7 +81,7 @@ fn is_day_forbidden_on_disabled_weekday(c: &mut Criterion) {
 
 #[allow(dead_code)]
 fn is_day_forbidden_in_disabled_month(c: &mut Criterion) {
-    let start_date = NaiveDate::from_ymd(2022, 7, 12);
+    let start_date = NaiveDate::from_ymd_opt(2022, 7, 12).unwrap();
     let config = create_config();
     c.bench_function("is_day_forbidden_in_disabled_month", |b| {
         b.iter(|| config.is_day_forbidden(black_box(&start_date)))
@@ -90,7 +90,7 @@ fn is_day_forbidden_in_disabled_month(c: &mut Criterion) {
 
 #[allow(dead_code)]
 fn is_day_forbidden_in_disabled_year(c: &mut Criterion) {
-    let start_date = NaiveDate::from_ymd(2021, 12, 9);
+    let start_date = NaiveDate::from_ymd_opt(2021, 12, 9).unwrap();
     let config = create_config();
     c.bench_function("is_day_forbidden_in_disabled_year", |b| {
         b.iter(|| config.is_day_forbidden(black_box(&start_date)))
@@ -99,7 +99,7 @@ fn is_day_forbidden_in_disabled_year(c: &mut Criterion) {
 
 #[allow(dead_code)]
 fn is_day_forbidden_on_disabled_monthly_date(c: &mut Criterion) {
-    let start_date = NaiveDate::from_ymd(2022, 1, 13);
+    let start_date = NaiveDate::from_ymd_opt(2022, 1, 13).unwrap();
     let config = create_config();
     c.bench_function("is_day_forbidden_on_disabled_monthly_date", |b| {
         b.iter(|| config.is_day_forbidden(black_box(&start_date)))
@@ -108,7 +108,7 @@ fn is_day_forbidden_on_disabled_monthly_date(c: &mut Criterion) {
 
 #[allow(dead_code)]
 fn is_day_forbidden_on_disabled_yearly_date(c: &mut Criterion) {
-    let start_date = NaiveDate::from_ymd(2020, 12, 24);
+    let start_date = NaiveDate::from_ymd_opt(2020, 12, 24).unwrap();
     let config = create_config();
     c.bench_function("is_day_forbidden_on_disabled_yearly_date", |b| {
         b.iter(|| config.is_day_forbidden(black_box(&start_date)))
@@ -117,7 +117,7 @@ fn is_day_forbidden_on_disabled_yearly_date(c: &mut Criterion) {
 
 #[allow(dead_code)]
 fn is_day_forbidden_on_disabled_unique_date(c: &mut Criterion) {
-    let start_date = NaiveDate::from_ymd(2020, 12, 8);
+    let start_date = NaiveDate::from_ymd_opt(2020, 12, 8).unwrap();
     let config = create_config();
     c.bench_function("is_day_forbidden_on_disabled_unique_date", |b| {
         b.iter(|| config.is_day_forbidden(black_box(&start_date)))
