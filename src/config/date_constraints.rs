@@ -91,8 +91,8 @@ cfg_if::cfg_if! {
 
 impl HasDateConstraints for DateConstraints {
     fn is_day_forbidden(&self, date: &NaiveDate) -> bool {
-        self.min_date.map_or(false, |min_date| &min_date > date)
-            || self.max_date.map_or(false, |max_date| &max_date < date)
+        self.min_date.is_some_and(|min_date| &min_date > date)
+            || self.max_date.is_some_and(|max_date| &max_date < date)
             || self.disabled_weekdays.contains(&date.weekday())
             || self
                 .disabled_months
